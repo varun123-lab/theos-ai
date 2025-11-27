@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ministry Tools - Theos AI</title>
+  
+  <!-- CSS Frameworks -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <style>
+    .ministry-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ministry-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .ministry-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .ministry-input:focus {
+      outline: none;
+      border-color: #000;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .ministry-textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 120px;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .ministry-textarea:focus {
+      outline: none;
+      border-color: #000;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .ministry-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #000;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ministry-btn:hover {
+      background: #1a1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .output-area {
+      background: #f8f9fa;
+      border: 2px solid rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-height: 200px;
+      margin-top: 1rem;
+      flex-grow: 1;
+    }
+
+    .output-placeholder {
+      color: #999;
+      font-style: italic;
+      text-align: center;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Tech Grid Background -->
+  <div class="tech-grid"></div>
+
+  <!-- Floating Navigation -->
+  <div id="floating-nav" 
+    class="fixed top-10 left-5 w-20 bg-black text-white rounded-3xl shadow-2xl retro-border
+           flex flex-col items-center gap-5 py-6 px-4 cursor-move select-none z-50">
+
+    <div class="w-12 h-1 bg-gradient-to-r from-white via-gray-400 to-white rounded-full mb-2 opacity-30"></div>
+
+    <a href="../index.html" class="nav-icon" data-tooltip="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z"/>
+      </svg>
+    </a>
+
+    <a href="study.html" class="nav-icon" data-tooltip="Study">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+      </svg>
+    </a>
+
+    <a href="atlas.html" class="nav-icon" data-tooltip="Atlas">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+      </svg>
+    </a>
+
+    <a href="ministry.html" class="nav-icon" data-tooltip="Ministry">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+    </a>
+
+    <a href="theos.html" class="nav-icon" data-tooltip="Theos Chat">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="ml-32 mr-10 p-10 max-w-[1800px] mx-auto relative z-10">
+
+    <!-- Header -->
+    <div class="mb-12" data-aos="fade-down">
+      <h1 class="text-6xl font-black text-white mb-4 tracking-tight animate__animated animate__fadeIn" style="font-family: 'Space Mono', monospace;">
+        <i class="fas fa-hands-praying me-3"></i>MINISTRY <span class="text-white">TOOLS</span>
+      </h1>
+      <p class="text-xl text-gray-400 font-light" data-aos="fade-up" data-aos-delay="200">
+        Worship planning, missionary tools, and sermon building
+      </p>
+    </div>
+
+    <!-- Three Column Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Worship Planner Card -->
+      <div class="ministry-card hvr-float" data-aos="fade-up" data-aos-delay="300">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-black mb-2" style="font-family: 'Space Mono', monospace;">
+            <i class="fas fa-music me-2 text-purple-600"></i>WORSHIP PLANNER
+          </h2>
+          <p class="text-sm text-gray-600">Generate worship setlists and chord progressions</p>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Sermon Theme</label>
+          <input 
+            type="text" 
+            class="ministry-input" 
+            placeholder="e.g., Grace, Redemption, Hope..."
+            id="worship-theme">
+        </div>
+
+        <button class="ministry-btn hvr-grow mb-4" onclick="generateSetlist()">
+          <i class="fas fa-wand-magic-sparkles me-2"></i>GENERATE SETLIST
+        </button>
+
+        <div class="output-area">
+          <div class="output-placeholder" id="worship-output">
+            <i class="fas fa-guitar fa-3x mb-3 opacity-30"></i>
+            <p>AI-generated worship songs and chords will appear here</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Missionary Tools Card -->
+      <div class="ministry-card hvr-float" data-aos="fade-up" data-aos-delay="400">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-black mb-2" style="font-family: 'Space Mono', monospace;">
+            <i class="fas fa-earth-americas me-2 text-green-600"></i>MISSIONARY TOOLS
+          </h2>
+          <p class="text-sm text-gray-600">Generate gospel explanations and translations</p>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Message/Topic</label>
+          <textarea 
+            class="ministry-textarea" 
+            placeholder="Enter your message or topic for outreach..."
+            id="mission-topic"></textarea>
+        </div>
+
+        <button class="ministry-btn hvr-grow mb-4" onclick="generateGospel()">
+          <i class="fas fa-globe me-2"></i>GENERATE EXPLANATION
+        </button>
+
+        <div class="output-area">
+          <div class="output-placeholder" id="mission-output">
+            <i class="fas fa-dove fa-3x mb-3 opacity-30"></i>
+            <p>Simple gospel explanations and translations will appear here</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sermon Builder Card -->
+      <div class="ministry-card hvr-float" data-aos="fade-up" data-aos-delay="500">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-black mb-2" style="font-family: 'Space Mono', monospace;">
+            <i class="fas fa-church me-2 text-blue-600"></i>SERMON BUILDER
+          </h2>
+          <p class="text-sm text-gray-600">Build complete sermon outlines and points</p>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Topic or Passage</label>
+          <input 
+            type="text" 
+            class="ministry-input" 
+            placeholder="e.g., Ephesians 2:8-9, Faith..."
+            id="sermon-topic">
+        </div>
+
+        <button class="ministry-btn hvr-grow mb-4" onclick="buildSermon()">
+          <i class="fas fa-book-bible me-2"></i>BUILD SERMON
+        </button>
+
+        <div class="output-area">
+          <div class="output-placeholder" id="sermon-output">
+            <i class="fas fa-podium fa-3x mb-3 opacity-30"></i>
+            <p>Sermon outline, points, and illustrations will appear here</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: true
+    });
+
+    // Draggable navigation
+    const nav = document.getElementById("floating-nav");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    nav.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - nav.offsetLeft;
+      offsetY = e.clientY - nav.offsetTop;
+      nav.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      nav.style.cursor = 'move';
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      nav.style.left = `${e.clientX - offsetX}px`;
+      nav.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    // Worship Planner Function
+    function generateSetlist() {
+      const theme = document.getElementById('worship-theme').value;
+      const output = document.getElementById('worship-output');
+      
+      if (!theme) {
+        output.innerHTML = '<p class="text-red-600">Please enter a sermon theme</p>';
+        return;
+      }
+      
+      output.innerHTML = `
+        <div class="animate__animated animate__fadeIn">
+          <h3 class="font-bold text-lg mb-3" style="font-family: 'Space Mono', monospace;">Worship Setlist: ${theme}</h3>
+          <div class="space-y-3">
+            <div class="bg-white p-3 rounded-lg border-l-4 border-purple-600">
+              <p class="font-semibold">1. "How Great Is Our God"</p>
+              <p class="text-xs text-gray-600">Key: G | Tempo: 76 BPM</p>
+              <p class="text-xs text-gray-500 mt-1">Chords: G, Em, C, D</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border-l-4 border-purple-600">
+              <p class="font-semibold">2. "10,000 Reasons"</p>
+              <p class="text-xs text-gray-600">Key: C | Tempo: 72 BPM</p>
+              <p class="text-xs text-gray-500 mt-1">Chords: C, G, Am, F</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border-l-4 border-purple-600">
+              <p class="font-semibold">3. "Goodness of God"</p>
+              <p class="text-xs text-gray-600">Key: C | Tempo: 123 BPM</p>
+              <p class="text-xs text-gray-500 mt-1">Chords: C, G/B, Am7, F</p>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-4"><i class="fas fa-info-circle me-1"></i>AI-generated based on theme: ${theme}</p>
+        </div>
+      `;
+    }
+
+    // Missionary Tools Function
+    function generateGospel() {
+      const topic = document.getElementById('mission-topic').value;
+      const output = document.getElementById('mission-output');
+      
+      if (!topic) {
+        output.innerHTML = '<p class="text-red-600">Please enter a message or topic</p>';
+        return;
+      }
+      
+      output.innerHTML = `
+        <div class="animate__animated animate__fadeIn">
+          <h3 class="font-bold text-lg mb-3" style="font-family: 'Space Mono', monospace;">Gospel Explanation</h3>
+          <div class="space-y-3">
+            <div class="bg-green-50 p-3 rounded-lg">
+              <p class="font-semibold text-sm mb-2">Simple Explanation:</p>
+              <p class="text-sm">God loves you so much that He sent Jesus to save you. All you need to do is believe in Him and trust Him with your life.</p>
+            </div>
+            <div class="bg-blue-50 p-3 rounded-lg">
+              <p class="font-semibold text-sm mb-2">Key Verses:</p>
+              <p class="text-xs">• John 3:16 - For God so loved the world...</p>
+              <p class="text-xs">• Romans 10:9 - If you declare with your mouth...</p>
+            </div>
+            <div class="bg-purple-50 p-3 rounded-lg">
+              <p class="font-semibold text-sm mb-2">Object Lesson:</p>
+              <p class="text-sm">Use a bridge illustration to show how Jesus bridges the gap between us and God.</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Sermon Builder Function
+    function buildSermon() {
+      const topic = document.getElementById('sermon-topic').value;
+      const output = document.getElementById('sermon-output');
+      
+      if (!topic) {
+        output.innerHTML = '<p class="text-red-600">Please enter a topic or passage</p>';
+        return;
+      }
+      
+      output.innerHTML = `
+        <div class="animate__animated animate__fadeIn">
+          <h3 class="font-bold text-lg mb-3" style="font-family: 'Space Mono', monospace;">Sermon Outline: ${topic}</h3>
+          <div class="space-y-3">
+            <div class="bg-white p-3 rounded-lg border-l-4 border-blue-600">
+              <p class="font-semibold text-sm">I. Introduction</p>
+              <p class="text-xs text-gray-600 mt-1">Hook your audience with a relatable story</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border-l-4 border-blue-600">
+              <p class="font-semibold text-sm">II. Main Point 1: God's Grace is Sufficient</p>
+              <p class="text-xs text-gray-600 mt-1">• Key verse: Ephesians 2:8-9</p>
+              <p class="text-xs text-gray-600">• Illustration: The gift analogy</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border-l-4 border-blue-600">
+              <p class="font-semibold text-sm">III. Main Point 2: Faith Without Works</p>
+              <p class="text-xs text-gray-600 mt-1">• Key verse: James 2:17</p>
+              <p class="text-xs text-gray-600">• Application: Practical steps</p>
+            </div>
+            <div class="bg-white p-3 rounded-lg border-l-4 border-blue-600">
+              <p class="font-semibold text-sm">IV. Conclusion & Call to Action</p>
+              <p class="text-xs text-gray-600 mt-1">Challenge your audience to respond in faith</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>

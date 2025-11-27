@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theos AI Assistant - Theos AI</title>
+  
+  <!-- CSS Frameworks -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <style>
+    .chat-container {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 300px);
+      min-height: 600px;
+      max-height: 800px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .message {
+      display: flex;
+      gap: 1rem;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .message.ai .message-avatar {
+      background: linear-gradient(135deg, #000 0%, #333 100%);
+      color: white;
+    }
+
+    .message.user .message-avatar {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+    }
+
+    .message-content {
+      max-width: 70%;
+      padding: 1rem 1.25rem;
+      border-radius: 16px;
+      line-height: 1.6;
+    }
+
+    .message.ai .message-content {
+      background: #f3f4f6;
+      color: #1f2937;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.user .message-content {
+      background: #000;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .action-btn {
+      padding: 0.375rem 0.75rem;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: #f9fafb;
+      border-color: #000;
+    }
+
+    .chat-input-bar {
+      border-top: 2px solid #f3f4f6;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 0 0 24px 24px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .input-wrapper:focus-within {
+      background: white;
+      border-color: #000;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.95rem;
+      padding: 0.5rem 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .input-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #6b7280;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .input-btn:hover {
+      background: #e5e7eb;
+      color: #000;
+    }
+
+    .input-btn.send {
+      background: #000;
+      color: white;
+    }
+
+    .input-btn.send:hover {
+      background: #1a1a1a;
+      transform: scale(1.05);
+    }
+
+    .recording-indicator {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: #fef2f2;
+      border: 2px solid #fecaca;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .recording-indicator.active {
+      display: flex;
+    }
+
+    .recording-dot {
+      width: 12px;
+      height: 12px;
+      background: #dc2626;
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+      }
+    }
+
+    .image-preview {
+      display: none;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .image-preview.active {
+      display: block;
+    }
+
+    .image-preview img {
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 0.375rem;
+      padding: 1rem;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: #9ca3af;
+      border-radius: 50%;
+      animation: typing 1.4s ease-in-out infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .scripture-link {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin: 0.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .scripture-link:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .message.ai .scripture-link {
+      background: rgba(0, 0, 0, 0.08);
+      color: #1f2937;
+    }
+
+    .message.ai .scripture-link:hover {
+      background: rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <!-- Tech Grid Background -->
+  <div class="tech-grid"></div>
+
+  <!-- Floating Navigation -->
+  <div id="floating-nav" 
+    class="fixed top-10 left-5 w-20 bg-black text-white rounded-3xl shadow-2xl retro-border
+           flex flex-col items-center gap-5 py-6 px-4 cursor-move select-none z-50">
+
+    <div class="w-12 h-1 bg-gradient-to-r from-white via-gray-400 to-white rounded-full mb-2 opacity-30"></div>
+
+    <a href="../index.html" class="nav-icon" data-tooltip="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z"/>
+      </svg>
+    </a>
+
+    <a href="study.html" class="nav-icon" data-tooltip="Study">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+      </svg>
+    </a>
+
+    <a href="atlas.html" class="nav-icon" data-tooltip="Atlas">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+      </svg>
+    </a>
+
+    <a href="ministry.html" class="nav-icon" data-tooltip="Ministry">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+    </a>
+
+    <a href="theos.html" class="nav-icon" data-tooltip="Theos Chat">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="ml-32 mr-10 p-10 max-w-[1400px] mx-auto relative z-10">
+
+    <!-- Header -->
+    <div class="mb-8" data-aos="fade-down">
+      <h1 class="text-6xl font-black text-white mb-4 tracking-tight animate__animated animate__fadeIn" style="font-family: 'Space Mono', monospace;">
+        <i class="fas fa-robot me-3"></i>THEOS AI <span class="text-white">ASSISTANT</span>
+      </h1>
+      <p class="text-xl text-gray-400 font-light" data-aos="fade-up" data-aos-delay="200">
+        Chat, upload images, or speak with your AI theological companion
+      </p>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container hvr-float" data-aos="zoom-in" data-aos-delay="300">
+      
+      <!-- Messages Area -->
+      <div class="chat-messages" id="chatMessages">
+        
+        <!-- AI Welcome Message -->
+        <div class="message ai">
+          <div class="message-avatar">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div>
+            <div class="message-content">
+              <p>Hello! I'm Theos AI, your theological companion. I can help you understand Scripture, answer biblical questions, analyze images with biblical text, or discuss theology. How can I assist you today?</p>
+            </div>
+            <div class="message-actions">
+              <button class="action-btn" onclick="quickAction('Explain John 3:16')">
+                <i class="fas fa-book-open me-1"></i>Explain a verse
+              </button>
+              <button class="action-btn" onclick="quickAction('Show cross references')">
+                <i class="fas fa-link me-1"></i>Cross references
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sample User Message -->
+        <div class="message user">
+          <div class="message-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="message-content">
+            <p>Can you explain the meaning of grace in the Bible?</p>
+          </div>
+        </div>
+
+        <!-- Sample AI Response -->
+        <div class="message ai">
+          <div class="message-avatar">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div>
+            <div class="message-content">
+              <p><strong>Grace</strong> in the Bible refers to God's unmerited favor and love toward humanity. It's a gift that cannot be earned through works.</p>
+              <p class="mt-2">Key aspects include:</p>
+              <ul class="mt-2 ml-4 space-y-1">
+                <li>• <strong>Undeserved favor</strong> - We receive what we don't deserve</li>
+                <li>• <strong>Free gift</strong> - Cannot be earned through good works</li>
+                <li>• <strong>Empowerment</strong> - God's grace enables us to live righteously</li>
+              </ul>
+              <div class="mt-3">
+                <a href="#" class="scripture-link">Ephesians 2:8-9</a>
+                <a href="#" class="scripture-link">Romans 6:14</a>
+                <a href="#" class="scripture-link">2 Corinthians 12:9</a>
+              </div>
+            </div>
+            <div class="message-actions">
+              <button class="action-btn" onclick="quickAction('Explain more about grace')">
+                <i class="fas fa-plus me-1"></i>Explain more
+              </button>
+              <button class="action-btn" onclick="quickAction('Show related verses')">
+                <i class="fas fa-book me-1"></i>Related verses
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input Bar -->
+      <div class="chat-input-bar">
+        
+        <!-- Recording Indicator -->
+        <div class="recording-indicator" id="recordingIndicator">
+          <div class="recording-dot"></div>
+          <span class="text-sm font-semibold text-red-600">Recording...</span>
+          <button class="ms-auto text-sm text-red-600 font-semibold" onclick="stopRecording()">Stop</button>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="image-preview" id="imagePreview">
+          <div class="flex items-center gap-3">
+            <img id="previewImage" src="" alt="Preview">
+            <div class="flex-1">
+              <p class="text-sm font-semibold">Image uploaded</p>
+              <p class="text-xs text-gray-600">AI will analyze this image</p>
+            </div>
+            <button class="text-gray-600 hover:text-red-600" onclick="removeImage()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Input Wrapper -->
+        <div class="input-wrapper">
+          <button class="input-btn" onclick="triggerImageUpload()" title="Upload Image">
+            <i class="fas fa-image"></i>
+          </button>
+          <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+          
+          <input 
+            type="text" 
+            class="chat-input" 
+            placeholder="Ask Theos anything about Scripture..."
+            id="messageInput"
+            onkeypress="handleKeyPress(event)">
+          
+          <button class="input-btn" id="micBtn" onclick="toggleRecording()" title="Voice Input">
+            <i class="fas fa-microphone"></i>
+          </button>
+          
+          <button class="input-btn send" onclick="sendMessage()" title="Send Message">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: true
+    });
+
+    // Draggable navigation
+    const nav = document.getElementById("floating-nav");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    nav.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - nav.offsetLeft;
+      offsetY = e.clientY - nav.offsetTop;
+      nav.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      nav.style.cursor = 'move';
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      nav.style.left = `${e.clientX - offsetX}px`;
+      nav.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    // Chat Functions
+    let isRecording = false;
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      addUserMessage(message);
+      input.value = '';
+      
+      // Simulate AI response
+      setTimeout(() => {
+        addTypingIndicator();
+        setTimeout(() => {
+          removeTypingIndicator();
+          addAIResponse(message);
+        }, 1500);
+      }, 500);
+    }
+
+    function addUserMessage(text) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message user';
+      messageDiv.innerHTML = `
+        <div class="message-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="message-content">
+          <p>${text}</p>
+        </div>
+      `;
+      messagesContainer.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    function addAIResponse(userMessage) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message ai';
+      messageDiv.innerHTML = `
+        <div class="message-avatar">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div>
+          <div class="message-content">
+            <p>I understand you're asking about "${userMessage}". Let me help you with that from a biblical perspective...</p>
+            <p class="mt-2">This relates to several key scriptures:</p>
+            <div class="mt-3">
+              <a href="#" class="scripture-link">Genesis 1:1</a>
+              <a href="#" class="scripture-link">John 1:1</a>
+            </div>
+          </div>
+          <div class="message-actions">
+            <button class="action-btn" onclick="quickAction('Tell me more')">
+              <i class="fas fa-plus me-1"></i>Tell me more
+            </button>
+            <button class="action-btn" onclick="quickAction('Show verses')">
+              <i class="fas fa-book me-1"></i>Show verses
+            </button>
+          </div>
+        </div>
+      `;
+      messagesContainer.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    function addTypingIndicator() {
+      const messagesContainer = document.getElementById('chatMessages');
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message ai';
+      typingDiv.id = 'typingIndicator';
+      typingDiv.innerHTML = `
+        <div class="message-avatar">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      `;
+      messagesContainer.appendChild(typingDiv);
+      scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const indicator = document.getElementById('typingIndicator');
+      if (indicator) indicator.remove();
+    }
+
+    function scrollToBottom() {
+      const messagesContainer = document.getElementById('chatMessages');
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    function quickAction(action) {
+      document.getElementById('messageInput').value = action;
+      sendMessage();
+    }
+
+    function toggleRecording() {
+      isRecording = !isRecording;
+      const indicator = document.getElementById('recordingIndicator');
+      const micBtn = document.getElementById('micBtn');
+      
+      if (isRecording) {
+        indicator.classList.add('active');
+        micBtn.style.color = '#dc2626';
+      } else {
+        indicator.classList.remove('active');
+        micBtn.style.color = '';
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      document.getElementById('recordingIndicator').classList.remove('active');
+      document.getElementById('micBtn').style.color = '';
+      addUserMessage('[Voice message: "What does the Bible say about love?"');
+    }
+
+    function triggerImageUpload() {
+      document.getElementById('imageInput').click();
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('previewImage').src = e.target.result;
+          document.getElementById('imagePreview').classList.add('active');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeImage() {
+      document.getElementById('imagePreview').classList.remove('active');
+      document.getElementById('imageInput').value = '';
+    }
+  </script>
+
+</body>
+</html>
