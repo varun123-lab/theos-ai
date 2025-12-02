@@ -292,7 +292,7 @@
   <!-- Floating Navigation -->
   <div id="floating-nav" 
     class="fixed top-10 left-5 w-20 bg-black text-white rounded-3xl shadow-2xl retro-border
-           flex flex-col items-center gap-5 py-6 px-4 cursor-move select-none z-50">
+           flex flex-col items-center gap-5 py-6 px-4 select-none z-50">
 
     <div class="w-12 h-1 bg-gradient-to-r from-white via-gray-400 to-white rounded-full mb-2 opacity-30"></div>
 
@@ -495,28 +495,7 @@
       mirror: true
     });
 
-    // Draggable navigation
-    const nav = document.getElementById("floating-nav");
-    let isDragging = false;
-    let offsetX, offsetY;
-
-    nav.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      offsetX = e.clientX - nav.offsetLeft;
-      offsetY = e.clientY - nav.offsetTop;
-      nav.style.cursor = 'grabbing';
-    });
-
-    document.addEventListener("mouseup", () => {
-      isDragging = false;
-      nav.style.cursor = 'move';
-    });
-
-    document.addEventListener("mousemove", (e) => {
-      if (!isDragging) return;
-      nav.style.left = `${e.clientX - offsetX}px`;
-      nav.style.top = `${e.clientY - offsetY}px`;
-    });
+    // Navigation is now fixed in place (not draggable)
 
     // Chat Functions
     let isRecording = false;

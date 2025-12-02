@@ -34,7 +34,7 @@
   <!-- Floating Navigation -->
   <div id="floating-nav" 
     class="fixed top-10 left-5 w-20 bg-black text-white rounded-3xl shadow-2xl retro-border
-           flex flex-col items-center gap-5 py-6 px-4 cursor-move select-none z-50">
+           flex flex-col items-center gap-5 py-6 px-4 select-none z-50">
 
     <div class="w-12 h-1 bg-gradient-to-r from-white via-gray-400 to-white rounded-full mb-2 opacity-30"></div>
 
@@ -460,39 +460,7 @@
       ease: "power3.out"
     });
 
-    // Make navigation draggable
-    const nav = document.getElementById('floating-nav');
-    let isDragging = false;
-    let currentX;
-    let currentY;
-    let initialX;
-    let initialY;
-
-    nav.addEventListener('mousedown', dragStart);
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', dragEnd);
-
-    function dragStart(e) {
-      if (e.target === nav || e.target.closest('.w-12')) {
-        initialX = e.clientX - nav.offsetLeft;
-        initialY = e.clientY - nav.offsetTop;
-        isDragging = true;
-      }
-    }
-
-    function drag(e) {
-      if (isDragging) {
-        e.preventDefault();
-        currentX = e.clientX - initialX;
-        currentY = e.clientY - initialY;
-        nav.style.left = currentX + 'px';
-        nav.style.top = currentY + 'px';
-      }
-    }
-
-    function dragEnd() {
-      isDragging = false;
-    }
+    // Navigation is now fixed in place (not draggable)
 
     // Tool button interactions
     document.querySelectorAll('.tool-btn').forEach(btn => {
