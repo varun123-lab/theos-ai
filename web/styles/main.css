@@ -50,10 +50,10 @@ body {
    ======================================== */
 
 .retro-border {
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    inset 0 0 20px rgba(255,255,255,0.02),
-    0 0 20px rgba(255,255,255,0.05);
+    inset 0 0 12px rgba(255,255,255,0.02),
+    0 0 12px rgba(255,255,255,0.04);
 }
 
 /* ========================================
@@ -116,28 +116,29 @@ body {
    ======================================== */
 
 .card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(255,255,255,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255,255,255,0.1);
   border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .white-card {
   background: #ffffff;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .white-card:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 /* ========================================
@@ -146,25 +147,27 @@ body {
 
 .search-container {
   position: relative;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 }
 
 .search-container:focus-within {
-  transform: translateY(-2px);
-  filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+  transform: translateY(-1px);
+  filter: drop-shadow(0 2px 8px rgba(255,255,255,0.08));
 }
 
 .search-input {
-  background: rgba(255, 255, 255, 0.03);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s ease;
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  font-size: 0.9375rem;
 }
 
 .search-input:focus {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04), 0 2px 12px rgba(255, 255, 255, 0.08);
+  outline: none;
 }
 
 /* ========================================
@@ -173,10 +176,10 @@ body {
 
 .verse-card {
   background: #000000 !important;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(255,255,255,0.1);
+  box-shadow: 0 2px 12px rgba(255,255,255,0.08);
 }
 
 .verse-card::before {
@@ -186,7 +189,7 @@ body {
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 70%);
   animation: shimmer 8s ease-in-out infinite;
 }
 
@@ -270,44 +273,46 @@ body {
    ======================================== */
 
 select {
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
   background: white;
-  border: 2px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   color: #1a1a1a;
   padding: 0.75rem 1rem;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 select:hover {
-  border-color: rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 0, 0, 0.25);
+  background: #fafafa;
 }
 
 select:focus {
   outline: none;
   border-color: #000;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
 }
 
 textarea {
   font-family: 'Inter', sans-serif;
   width: 100%;
   padding: 1rem;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
   resize: vertical;
   min-height: 150px;
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
   transition: all 0.2s ease;
 }
 
 textarea:focus {
   outline: none;
   border-color: #000;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.04);
 }
 
 /* ========================================
@@ -318,11 +323,11 @@ textarea:focus {
   width: 100%;
   padding: 1rem;
   background: white;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  font-size: 0.85rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
   color: #1a1a1a;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -336,8 +341,8 @@ textarea:focus {
   background: #000;
   color: white;
   border-color: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .save-btn {
@@ -346,18 +351,18 @@ textarea:focus {
   background: #000;
   color: white;
   border: none;
-  border-radius: 12px;
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .save-btn:hover {
   background: #1a1a1a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .send-btn {

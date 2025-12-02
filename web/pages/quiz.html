@@ -1,0 +1,1487 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bible Quiz - Theos AI</title>
+  
+  <!-- CSS Frameworks -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .quiz-container {
+      padding: 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page-header {
+      margin-bottom: 4rem;
+    }
+
+    .page-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .progress-container {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-progress {
+      width: 100%;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #000 0%, #4b5563 100%);
+      transition: width 0.4s ease;
+      border-radius: 12px;
+    }
+
+    .quiz-mode-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3.5rem 3rem;
+      margin-bottom: 3rem;
+      padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .quiz-mode-selector {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .quiz-mode-selector {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+    }
+
+    .mode-card {
+      padding: 2.5rem;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mode-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #000;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mode-card:hover {
+      border-color: #d1d5db;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .mode-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .mode-card:hover .mode-icon {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .mode-icon {
+      width: 56px;
+      height: 56px;
+      background: #000;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .mode-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+      transition: color 0.3s ease;
+      line-height: 1.3;
+    }
+
+    .mode-card:hover .mode-title {
+      color: #000;
+    }
+
+    .mode-description {
+      font-size: 0.9375rem;
+      color: #6b7280;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+      flex: 1;
+    }
+
+    .mode-card:hover .mode-description {
+      color: #4b5563;
+    }
+
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid #f3f4f6;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .question-number {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .question-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .answer-option {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1.125rem 1.25rem;
+      margin-bottom: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #374151;
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+
+    .answer-option:hover {
+      border-color: #9ca3af;
+      background: #fafafa;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .answer-option.selected {
+      border-color: #000;
+      background: #000;
+      color: white;
+    }
+
+    .answer-option.correct {
+      border-color: #10b981;
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .answer-option.incorrect {
+      border-color: #ef4444;
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .answer-option.disabled {
+      cursor: default;
+      opacity: 0.7;
+    }
+
+    .answer-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      flex-shrink: 0;
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+
+    .answer-option.selected .answer-letter {
+      background: white;
+      color: #000;
+    }
+
+    .answer-option.correct .answer-letter {
+      background: #10b981;
+      color: white;
+    }
+
+    .answer-option.incorrect .answer-letter {
+      background: #ef4444;
+      color: white;
+    }
+
+    .quiz-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .quiz-btn {
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quiz-btn-primary {
+      background: #000;
+      color: white;
+      font-weight: 600;
+    }
+
+    .quiz-btn-primary:hover {
+      background: #1a1a1a;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .quiz-btn-primary:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+      opacity: 0.6;
+    }
+
+    .quiz-btn-secondary {
+      background: white;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      font-weight: 600;
+    }
+
+    .quiz-btn-secondary:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .score-display {
+      text-align: center;
+      padding: 3rem;
+    }
+
+    .score-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #000 0%, #4b5563 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      color: white;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      border: 4px solid #e5e7eb;
+    }
+
+    .score-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .score-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 2px solid #e5e7eb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+      font-weight: 500;
+    }
+
+    .explanation-box {
+      background: #eff6ff;
+      border: 2px solid #3b82f6;
+      border-left: 4px solid #3b82f6;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+
+    .explanation-box.show {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .difficulty-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.375rem 0.875rem;
+      border-radius: 6px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .difficulty-easy {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .difficulty-medium {
+      background: #fef9c3;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .difficulty-hard {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <!-- Tech Grid Background -->
+  <div class="tech-grid"></div>
+
+  <!-- Floating Navigation -->
+  <div id="floating-nav" 
+    class="fixed top-10 left-5 w-20 bg-black text-white rounded-3xl shadow-2xl retro-border
+           flex flex-col items-center gap-5 py-6 px-4 cursor-move select-none z-50">
+
+    <div class="w-12 h-1 bg-gradient-to-r from-white via-gray-400 to-white rounded-full mb-2 opacity-30"></div>
+
+    <a href="../index.html" class="nav-icon" data-tooltip="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z"/>
+      </svg>
+    </a>
+
+    <a href="study.html" class="nav-icon" data-tooltip="Study">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+      </svg>
+    </a>
+
+    <a href="atlas.html" class="nav-icon" data-tooltip="Atlas">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+      </svg>
+    </a>
+
+    <a href="ministry.html" class="nav-icon" data-tooltip="Ministry">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+    </a>
+
+    <a href="theos.html" class="nav-icon" data-tooltip="Theos Chat">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+      </svg>
+    </a>
+
+    <a href="quiz.html" class="nav-icon" data-tooltip="Bible Quiz">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+      viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="ml-32 mr-20 p-10 relative z-10" style="max-width: calc(100% - 10rem);">
+
+    <!-- Header -->
+    <div class="page-header" data-aos="fade-down">
+      <h1 class="page-title text-white">
+        Bible Quiz
+      </h1>
+      <p class="page-subtitle text-gray-300" data-aos="fade-up" data-aos-delay="200">
+        Test your knowledge and grow deeper in the Word through interactive quizzes
+      </p>
+    </div>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container" data-aos="fade-up" data-aos-delay="200">
+      
+      <!-- Quiz Mode Selection Screen -->
+      <div id="categoryScreen">
+        <h2 class="text-2xl font-semibold mb-6 text-white" style="letter-spacing: -0.01em;">Select Quiz Category</h2>
+        
+        <div class="quiz-mode-selector">
+          <div class="mode-card hvr-float" onclick="startQuiz('general')">
+            <div class="mode-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="mode-title">General Knowledge</h3>
+            <p class="mode-description">Test your overall Bible knowledge with questions covering both Old and New Testament</p>
+          </div>
+          
+          <div class="mode-card hvr-float" onclick="startQuiz('book-specific')">
+            <div class="mode-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <h3 class="mode-title">Book-Specific Quiz</h3>
+            <p class="mode-description">Focus on specific books like John, Romans, Genesis, or Psalms</p>
+          </div>
+          
+          <div class="mode-card hvr-float" onclick="startQuiz('verse-completion')">
+            <div class="mode-icon">
+              <i class="fas fa-quote-right"></i>
+            </div>
+            <h3 class="mode-title">Verse Completion</h3>
+            <p class="mode-description">Fill in the missing words from popular Bible verses</p>
+          </div>
+
+          <div class="mode-card hvr-float" onclick="startQuiz('characters')">
+            <div class="mode-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3 class="mode-title">Biblical Characters</h3>
+            <p class="mode-description">Test your knowledge of key figures from Adam to Paul</p>
+          </div>
+
+          <div class="mode-card hvr-float" onclick="startQuiz('prophecy')">
+            <div class="mode-icon">
+              <i class="fas fa-scroll"></i>
+            </div>
+            <h3 class="mode-title">Prophecy & Fulfillment</h3>
+            <p class="mode-description">Explore Old Testament prophecies and their New Testament fulfillment</p>
+          </div>
+
+          <div class="mode-card hvr-float" onclick="startQuiz('parables')">
+            <div class="mode-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <h3 class="mode-title">Parables of Jesus</h3>
+            <p class="mode-description">Understand the meanings behind Jesus's parables and teachings</p>
+          </div>
+
+          <div class="mode-card hvr-float" onclick="startQuiz('miracles')">
+            <div class="mode-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <h3 class="mode-title">Miracles & Signs</h3>
+            <p class="mode-description">Quiz on miracles performed throughout the Bible</p>
+          </div>
+
+          <div class="mode-card hvr-float" onclick="startQuiz('geography')">
+            <div class="mode-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h3 class="mode-title">Biblical Geography</h3>
+            <p class="mode-description">Test your knowledge of places, cities, and landmarks in Scripture</p>
+          </div>
+
+          <div class="mode-card hvr-float" onclick="startQuiz('doctrine')">
+            <div class="mode-icon">
+              <i class="fas fa-cross"></i>
+            </div>
+            <h3 class="mode-title">Christian Doctrine</h3>
+            <p class="mode-description">Explore fundamental Christian beliefs and theological concepts</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Screen -->
+      <div id="quizScreen" style="display: none;">
+        
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-semibold text-white" id="questionNumber">Question 1 of 10</span>
+            <span class="text-sm font-semibold text-white">Score: <span id="currentScore">0</span>/10</span>
+          </div>
+          <div class="quiz-progress">
+            <div class="quiz-progress-bar" id="progressBar" style="width: 10%"></div>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-card" id="questionCard">
+          <div class="question-header">
+            <span class="difficulty-badge difficulty-medium" id="difficultyBadge">Medium</span>
+            <span class="text-xs text-gray-500 font-semibold uppercase" id="categoryLabel">General Knowledge</span>
+          </div>
+          
+          <div class="question-text" id="questionText">
+            Loading question...
+          </div>
+
+          <div id="answersContainer">
+            <!-- Answers will be inserted here -->
+          </div>
+
+          <div class="explanation-box" id="explanationBox">
+            <div class="flex gap-3">
+              <i class="fas fa-lightbulb text-blue-600 text-xl mt-1"></i>
+              <div class="flex-1">
+                <strong class="text-blue-900 text-sm font-semibold">Explanation</strong>
+                <p class="text-blue-800 text-sm mt-1 leading-relaxed" id="explanationText"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiz Controls -->
+        <div class="quiz-controls">
+          <button class="quiz-btn quiz-btn-primary" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+            Next Question
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <button class="quiz-btn quiz-btn-primary" id="finishBtn" onclick="finishQuiz()" style="display: none;">
+            View Results
+            <i class="fas fa-check-circle"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Results Screen -->
+      <div id="resultsScreen" style="display: none;">
+        <div class="score-display">
+          <h2 class="text-3xl font-bold mb-6 text-white">Quiz Complete!</h2>
+          
+          <div class="score-circle animate__animated animate__zoomIn">
+            <div class="score-number" id="finalScore">0</div>
+            <div class="score-label">out of 10</div>
+          </div>
+
+          <h3 class="text-2xl font-bold mb-2 text-white" id="resultMessage">Great Job!</h3>
+          <p class="text-gray-300 mb-6 text-lg" id="resultDescription">You're a Bible scholar!</p>
+
+          <div class="stats-grid">
+            <div class="stat-card hvr-float">
+              <div class="stat-value text-green-600" id="correctCount">0</div>
+              <div class="stat-label">Correct Answers</div>
+            </div>
+            <div class="stat-card hvr-float">
+              <div class="stat-value text-red-600" id="incorrectCount">0</div>
+              <div class="stat-label">Incorrect Answers</div>
+            </div>
+            <div class="stat-card hvr-float">
+              <div class="stat-value text-blue-600" id="percentageScore">0%</div>
+              <div class="stat-label">Accuracy</div>
+            </div>
+          </div>
+
+          <div class="quiz-controls mt-8">
+            <button class="quiz-btn quiz-btn-secondary" onclick="resetQuiz()">
+              <i class="fas fa-home"></i>
+              Choose Another Quiz
+            </button>
+            <button class="quiz-btn quiz-btn-primary" onclick="retakeQuiz()">
+              <i class="fas fa-redo"></i>
+              Retake Quiz
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: true
+    });
+
+    // Draggable navigation
+    const nav = document.getElementById("floating-nav");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    nav.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - nav.offsetLeft;
+      offsetY = e.clientY - nav.offsetTop;
+      nav.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      nav.style.cursor = 'move';
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      nav.style.left = `${e.clientX - offsetX}px`;
+      nav.style.top = `${e.clientY - offsetY}px`;
+    });
+
+    // Quiz Data
+    const quizData = {
+      'general': [
+        {
+          question: "Who built the ark to survive the great flood?",
+          answers: ["Moses", "Noah", "Abraham", "David"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "Noah built the ark as commanded by God to save his family and animals from the flood (Genesis 6-9)."
+        },
+        {
+          question: "What did God create on the first day?",
+          answers: ["Animals", "Light", "Plants", "Humans"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "God created light on the first day, separating it from darkness (Genesis 1:3-5)."
+        },
+        {
+          question: "Who was sold into slavery by his brothers?",
+          answers: ["Joseph", "Benjamin", "Judah", "Reuben"],
+          correct: 0,
+          difficulty: "medium",
+          explanation: "Joseph was sold by his jealous brothers to merchants who took him to Egypt (Genesis 37)."
+        },
+        {
+          question: "How many plagues did God send upon Egypt?",
+          answers: ["7", "10", "12", "15"],
+          correct: 1,
+          difficulty: "medium",
+          explanation: "God sent 10 plagues upon Egypt to convince Pharaoh to free the Israelites (Exodus 7-12)."
+        },
+        {
+          question: "Who defeated Goliath with a sling and stone?",
+          answers: ["Saul", "Jonathan", "David", "Samuel"],
+          correct: 2,
+          difficulty: "easy",
+          explanation: "David, while still a shepherd boy, defeated the giant Goliath with faith in God (1 Samuel 17)."
+        },
+        {
+          question: "Which book of the Bible is a collection of songs and poems?",
+          answers: ["Proverbs", "Psalms", "Ecclesiastes", "Song of Solomon"],
+          correct: 1,
+          difficulty: "medium",
+          explanation: "The book of Psalms contains 150 songs and poems, many written by King David."
+        },
+        {
+          question: "Who interpreted Pharaoh's dreams in Egypt?",
+          answers: ["Moses", "Joseph", "Daniel", "Samuel"],
+          correct: 1,
+          difficulty: "medium",
+          explanation: "Joseph interpreted Pharaoh's dreams about seven years of plenty and seven years of famine (Genesis 41)."
+        },
+        {
+          question: "What was the name of Abraham's wife?",
+          answers: ["Rachel", "Rebekah", "Sarah", "Leah"],
+          correct: 2,
+          difficulty: "medium",
+          explanation: "Sarah was Abraham's wife who gave birth to Isaac in her old age (Genesis 17-21)."
+        },
+        {
+          question: "Which prophet was swallowed by a great fish?",
+          answers: ["Elijah", "Jonah", "Elisha", "Jeremiah"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "Jonah was swallowed by a great fish for three days after trying to flee from God's command (Jonah 1-2)."
+        },
+        {
+          question: "How many commandments did God give Moses?",
+          answers: ["7", "10", "12", "15"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "God gave Moses the Ten Commandments on Mount Sinai (Exodus 20)."
+        }
+      ],
+      'new-testament': [
+        {
+          question: "In which town was Jesus born?",
+          answers: ["Nazareth", "Jerusalem", "Bethlehem", "Capernaum"],
+          correct: 2,
+          difficulty: "easy",
+          explanation: "Jesus was born in Bethlehem, fulfilling the prophecy in Micah 5:2 (Luke 2:4-7)."
+        },
+        {
+          question: "How many disciples did Jesus choose?",
+          answers: ["10", "12", "14", "7"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "Jesus chose 12 disciples to be his closest followers (Matthew 10:1-4)."
+        },
+        {
+          question: "Who baptized Jesus?",
+          answers: ["Peter", "John the Baptist", "John the Apostle", "Andrew"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "John the Baptist baptized Jesus in the Jordan River (Matthew 3:13-17)."
+        },
+        {
+          question: "What was Matthew's occupation before following Jesus?",
+          answers: ["Fisherman", "Tax collector", "Carpenter", "Physician"],
+          correct: 1,
+          difficulty: "medium",
+          explanation: "Matthew was a tax collector before Jesus called him to be a disciple (Matthew 9:9)."
+        },
+        {
+          question: "Who denied Jesus three times?",
+          answers: ["Judas", "Peter", "Thomas", "James"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "Peter denied knowing Jesus three times before the rooster crowed (Luke 22:54-62)."
+        },
+        {
+          question: "How many days did Jesus fast in the wilderness?",
+          answers: ["30", "40", "50", "60"],
+          correct: 1,
+          difficulty: "medium",
+          explanation: "Jesus fasted for 40 days and nights in the wilderness where he was tempted by Satan (Matthew 4:1-2)."
+        },
+        {
+          question: "Who was the first person to see Jesus after his resurrection?",
+          answers: ["Peter", "John", "Mary Magdalene", "Thomas"],
+          correct: 2,
+          difficulty: "medium",
+          explanation: "Mary Magdalene was the first to see the risen Jesus at the tomb (John 20:11-18)."
+        },
+        {
+          question: "Which disciple was known as 'Doubting'?",
+          answers: ["Peter", "Thomas", "Judas", "Philip"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "Thomas doubted Jesus's resurrection until he saw and touched Jesus's wounds (John 20:24-29)."
+        },
+        {
+          question: "What was Paul's name before his conversion?",
+          answers: ["Simon", "Saul", "Stephen", "Samuel"],
+          correct: 1,
+          difficulty: "medium",
+          explanation: "Paul was originally named Saul before his conversion on the road to Damascus (Acts 9:1-19)."
+        },
+        {
+          question: "How many Gospels are in the New Testament?",
+          answers: ["3", "4", "5", "6"],
+          correct: 1,
+          difficulty: "easy",
+          explanation: "There are four Gospels: Matthew, Mark, Luke, and John, each telling the story of Jesus's life."
+        }
+      ]
+    };
+
+    // Characters Quiz Data
+    quizData['characters'] = [
+      {
+        question: "Who was the first king of Israel?",
+        answers: ["David", "Solomon", "Saul", "Samuel"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Saul was anointed as the first king of Israel by the prophet Samuel (1 Samuel 10:1)."
+      },
+      {
+        question: "Which woman became queen of Persia and saved the Jewish people?",
+        answers: ["Ruth", "Esther", "Deborah", "Rahab"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Esther became queen and courageously saved her people from destruction (Book of Esther)."
+      },
+      {
+        question: "Who was the oldest man recorded in the Bible?",
+        answers: ["Noah", "Adam", "Methuselah", "Abraham"],
+        correct: 2,
+        difficulty: "hard",
+        explanation: "Methuselah lived to be 969 years old (Genesis 5:27)."
+      },
+      {
+        question: "Which prophet was fed by ravens in the wilderness?",
+        answers: ["Elisha", "Elijah", "Jeremiah", "Isaiah"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "God sent ravens to bring bread and meat to Elijah by the brook Cherith (1 Kings 17:4-6)."
+      },
+      {
+        question: "Who was the mother of Samuel?",
+        answers: ["Hannah", "Sarah", "Leah", "Rachel"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "Hannah prayed for a child and dedicated Samuel to the Lord (1 Samuel 1)."
+      },
+      {
+        question: "Which disciple was a tax collector before following Jesus?",
+        answers: ["Peter", "Matthew", "John", "James"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Matthew (also called Levi) was a tax collector (Matthew 9:9)."
+      },
+      {
+        question: "Who wrestled with God and had his name changed to Israel?",
+        answers: ["Isaac", "Jacob", "Joseph", "Esau"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Jacob wrestled with God at Peniel and was renamed Israel (Genesis 32:28)."
+      },
+      {
+        question: "Which king was known for his wisdom?",
+        answers: ["Saul", "David", "Solomon", "Hezekiah"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Solomon asked God for wisdom and became the wisest king (1 Kings 3:12)."
+      },
+      {
+        question: "Who was the first Christian martyr?",
+        answers: ["Peter", "James", "Stephen", "Paul"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Stephen was stoned to death for his faith, becoming the first Christian martyr (Acts 7)."
+      },
+      {
+        question: "Which woman judged Israel?",
+        answers: ["Miriam", "Deborah", "Ruth", "Naomi"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Deborah was a prophetess and judge who led Israel to victory (Judges 4-5)."
+      }
+    ];
+
+    // Prophecy Quiz Data
+    quizData['prophecy'] = [
+      {
+        question: "Where was the Messiah prophesied to be born?",
+        answers: ["Jerusalem", "Nazareth", "Bethlehem", "Capernaum"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Micah 5:2 prophesied the Messiah would be born in Bethlehem, fulfilled in Matthew 2:1."
+      },
+      {
+        question: "Which prophet foretold a virgin would conceive?",
+        answers: ["Jeremiah", "Ezekiel", "Isaiah", "Daniel"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Isaiah 7:14 prophesied a virgin would conceive, fulfilled in Matthew 1:23."
+      },
+      {
+        question: "How many pieces of silver was prophesied for betraying the Messiah?",
+        answers: ["20", "30", "40", "50"],
+        correct: 1,
+        difficulty: "hard",
+        explanation: "Zechariah 11:12-13 prophesied 30 pieces of silver, fulfilled when Judas betrayed Jesus."
+      },
+      {
+        question: "Which prophet described the suffering servant?",
+        answers: ["Isaiah", "Jeremiah", "Ezekiel", "Daniel"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "Isaiah 53 describes the suffering servant, fulfilled in Jesus's crucifixion."
+      },
+      {
+        question: "Where did prophecy say Jesus would grow up?",
+        answers: ["Jerusalem", "Bethlehem", "Nazareth", "Egypt"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Multiple prophets indicated the Messiah would be called a Nazarene (Matthew 2:23)."
+      },
+      {
+        question: "What animal did Zechariah prophesy the Messiah would ride?",
+        answers: ["Horse", "Camel", "Donkey", "Ox"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Zechariah 9:9 prophesied riding on a donkey, fulfilled on Palm Sunday (Matthew 21:5)."
+      },
+      {
+        question: "Which psalm prophesied crucifixion details?",
+        answers: ["Psalm 23", "Psalm 22", "Psalm 51", "Psalm 100"],
+        correct: 1,
+        difficulty: "hard",
+        explanation: "Psalm 22 describes crucifixion details written before crucifixion was invented."
+      },
+      {
+        question: "How many days did Jonah prophesy Nineveh had to repent?",
+        answers: ["3", "7", "40", "70"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Jonah warned Nineveh had 40 days to repent (Jonah 3:4)."
+      },
+      {
+        question: "Which prophet foretold Jesus would be born of David's lineage?",
+        answers: ["Isaiah", "Jeremiah", "Micah", "All of them"],
+        correct: 3,
+        difficulty: "medium",
+        explanation: "Multiple prophets confirmed the Messiah would come from David's line."
+      },
+      {
+        question: "What did Daniel prophesy about the Messiah's timing?",
+        answers: ["70 weeks", "70 years", "70 days", "700 years"],
+        correct: 0,
+        difficulty: "hard",
+        explanation: "Daniel 9:24-27 prophesied 70 weeks until the Messiah."
+      }
+    ];
+
+    // Parables Quiz Data
+    quizData['parables'] = [
+      {
+        question: "In the Parable of the Sower, what happened to seeds on rocky ground?",
+        answers: ["Birds ate them", "They withered quickly", "They grew well", "They were trampled"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Seeds on rocky ground sprouted but withered because they had no root (Matthew 13:5-6)."
+      },
+      {
+        question: "How many coins did the woman lose in Jesus's parable?",
+        answers: ["1", "5", "10", "50"],
+        correct: 0,
+        difficulty: "easy",
+        explanation: "The woman lost one coin and searched until she found it (Luke 15:8-9)."
+      },
+      {
+        question: "In the Parable of the Good Samaritan, who stopped to help?",
+        answers: ["Priest", "Levite", "Samaritan", "Roman"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "The Samaritan helped while the priest and Levite passed by (Luke 10:33)."
+      },
+      {
+        question: "What did the prodigal son ask for from his father?",
+        answers: ["A blessing", "His inheritance", "Forgiveness", "A job"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "The prodigal son asked for his share of the inheritance (Luke 15:12)."
+      },
+      {
+        question: "In the Parable of the Talents, how many talents did the lazy servant receive?",
+        answers: ["1", "2", "5", "10"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "The lazy servant received one talent and buried it (Matthew 25:18)."
+      },
+      {
+        question: "What did the rich fool plan to build in Jesus's parable?",
+        answers: ["A temple", "Bigger barns", "A palace", "A tower"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "The rich fool planned to build bigger barns to store his goods (Luke 12:18)."
+      },
+      {
+        question: "In the Parable of the Wedding Feast, why was one guest thrown out?",
+        answers: ["Late arrival", "No wedding garment", "Refused to dance", "Didn't bring a gift"],
+        correct: 1,
+        difficulty: "hard",
+        explanation: "The guest was thrown out for not wearing wedding clothes (Matthew 22:11-13)."
+      },
+      {
+        question: "What time of day did laborers in the vineyard all receive the same pay?",
+        answers: ["Morning", "Noon", "Evening", "Midnight"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "All workers were paid the same at evening, regardless of hours worked (Matthew 20:8)."
+      },
+      {
+        question: "How many sheep did the shepherd leave to find the lost one?",
+        answers: ["50", "75", "99", "100"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "The shepherd left 99 sheep to find the one that was lost (Luke 15:4)."
+      },
+      {
+        question: "What did the seed in good soil represent?",
+        answers: ["Angels", "Those who hear and obey", "The church", "Heaven"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Good soil represents those who hear the word and produce fruit (Matthew 13:23)."
+      }
+    ];
+
+    // Miracles Quiz Data
+    quizData['miracles'] = [
+      {
+        question: "How many fish and loaves did Jesus use to feed 5,000?",
+        answers: ["2 fish, 3 loaves", "5 fish, 2 loaves", "2 fish, 5 loaves", "3 fish, 3 loaves"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Jesus fed 5,000 with five loaves and two fish (Matthew 14:17-21)."
+      },
+      {
+        question: "What was the name of the man Jesus raised from the dead after 4 days?",
+        answers: ["Jairus", "Lazarus", "Simon", "Nicodemus"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Jesus raised Lazarus from the dead after four days (John 11:43-44)."
+      },
+      {
+        question: "Where did Jesus perform His first miracle?",
+        answers: ["Jerusalem", "Capernaum", "Cana", "Bethany"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Jesus turned water into wine at a wedding in Cana (John 2:1-11)."
+      },
+      {
+        question: "How many years had the paralytic been sick before Jesus healed him?",
+        answers: ["12", "18", "38", "40"],
+        correct: 2,
+        difficulty: "hard",
+        explanation: "The man at the Pool of Bethesda had been sick for 38 years (John 5:5)."
+      },
+      {
+        question: "What did Jesus write on the ground before the woman caught in adultery?",
+        answers: ["Her sins", "The Ten Commandments", "Unknown", "Their names"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "The Bible doesn't tell us what Jesus wrote (John 8:6)."
+      },
+      {
+        question: "How many lepers did Jesus heal, and how many returned to thank Him?",
+        answers: ["10 healed, 1 returned", "7 healed, 2 returned", "12 healed, 3 returned", "5 healed, 1 returned"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "Jesus healed 10 lepers, but only one returned to give thanks (Luke 17:12-19)."
+      },
+      {
+        question: "What did Jesus calm during the storm?",
+        answers: ["Wind only", "Waves only", "Wind and waves", "Lightning"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Jesus rebuked the wind and waves, bringing calm (Mark 4:39)."
+      },
+      {
+        question: "How long was the woman with the issue of blood sick?",
+        answers: ["5 years", "12 years", "20 years", "30 years"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "The woman had been bleeding for 12 years before touching Jesus's garment (Mark 5:25)."
+      },
+      {
+        question: "What body part did Jesus restore to the high priest's servant?",
+        answers: ["Hand", "Eye", "Ear", "Foot"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Jesus healed Malchus's ear after Peter cut it off (Luke 22:51)."
+      },
+      {
+        question: "Where did Moses part the waters?",
+        answers: ["Jordan River", "Red Sea", "Dead Sea", "Sea of Galilee"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Moses parted the Red Sea for the Israelites to escape Egypt (Exodus 14:21)."
+      }
+    ];
+
+    // Geography Quiz Data
+    quizData['geography'] = [
+      {
+        question: "In which city was Jesus born?",
+        answers: ["Nazareth", "Jerusalem", "Bethlehem", "Bethany"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Jesus was born in Bethlehem (Luke 2:4-7)."
+      },
+      {
+        question: "Where was Jesus baptized?",
+        answers: ["Sea of Galilee", "Jordan River", "Red Sea", "Dead Sea"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "John baptized Jesus in the Jordan River (Matthew 3:13)."
+      },
+      {
+        question: "On which mountain did Moses receive the Ten Commandments?",
+        answers: ["Mount Sinai", "Mount Carmel", "Mount Zion", "Mount Nebo"],
+        correct: 0,
+        difficulty: "easy",
+        explanation: "Moses received the Ten Commandments on Mount Sinai (Exodus 19:20)."
+      },
+      {
+        question: "Where did Jesus grow up?",
+        answers: ["Bethlehem", "Jerusalem", "Nazareth", "Capernaum"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Jesus grew up in Nazareth (Luke 2:39-40)."
+      },
+      {
+        question: "What sea did Jesus walk on?",
+        answers: ["Red Sea", "Dead Sea", "Sea of Galilee", "Mediterranean Sea"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "Jesus walked on the Sea of Galilee (Matthew 14:25)."
+      },
+      {
+        question: "Where was Paul converted on his journey?",
+        answers: ["Jerusalem", "Damascus", "Rome", "Antioch"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Paul was converted on the road to Damascus (Acts 9:3)."
+      },
+      {
+        question: "Where was the temple located?",
+        answers: ["Bethlehem", "Nazareth", "Jerusalem", "Jericho"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "The temple was in Jerusalem (1 Kings 8:1)."
+      },
+      {
+        question: "Through which city did Jesus say it's easier for a camel to go through the eye of a needle?",
+        answers: ["Jerusalem gate", "Damascus gate", "Jericho gate", "Needle gate"],
+        correct: 0,
+        difficulty: "hard",
+        explanation: "This refers to a small gate in Jerusalem's walls (Matthew 19:24)."
+      },
+      {
+        question: "Where did Jesus ascend to heaven?",
+        answers: ["Jerusalem", "Bethany", "Mount of Olives", "Galilee"],
+        correct: 2,
+        difficulty: "medium",
+        explanation: "Jesus ascended from the Mount of Olives (Acts 1:12)."
+      },
+      {
+        question: "What garden was Jesus arrested in?",
+        answers: ["Garden of Eden", "Gethsemane", "Solomon's Garden", "Olive Garden"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Jesus was arrested in the Garden of Gethsemane (Matthew 26:36)."
+      }
+    ];
+
+    // Doctrine Quiz Data
+    quizData['doctrine'] = [
+      {
+        question: "How many persons are in the Trinity?",
+        answers: ["One", "Two", "Three", "Four"],
+        correct: 2,
+        difficulty: "easy",
+        explanation: "The Trinity consists of three persons: Father, Son, and Holy Spirit (Matthew 28:19)."
+      },
+      {
+        question: "What does 'salvation by grace' mean?",
+        answers: ["Earned by works", "Given freely", "Purchased with money", "Inherited"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Salvation is a free gift from God, not earned by works (Ephesians 2:8-9)."
+      },
+      {
+        question: "What is the 'Great Commission'?",
+        answers: ["Love your neighbor", "Go and make disciples", "Keep the Sabbath", "Honor your parents"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Jesus commanded His disciples to go and make disciples of all nations (Matthew 28:19-20)."
+      },
+      {
+        question: "What does sanctification mean?",
+        answers: ["Being made holy", "Being baptized", "Being saved", "Being chosen"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "Sanctification is the process of being made holy and set apart for God."
+      },
+      {
+        question: "What is justification?",
+        answers: ["Making excuses", "Being declared righteous", "Being good", "Following rules"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Justification is being declared righteous before God through faith (Romans 5:1)."
+      },
+      {
+        question: "What does 'incarnation' refer to?",
+        answers: ["Jesus's death", "Jesus becoming human", "Jesus's resurrection", "Jesus's ascension"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "The incarnation is when God became human in Jesus Christ (John 1:14)."
+      },
+      {
+        question: "What is the resurrection?",
+        answers: ["Jesus rising from the dead", "Going to heaven", "Baptism", "Salvation"],
+        correct: 0,
+        difficulty: "easy",
+        explanation: "The resurrection is Jesus rising from the dead on the third day (1 Corinthians 15:4)."
+      },
+      {
+        question: "What does 'atonement' mean?",
+        answers: ["Making peace", "Reconciliation for sin", "Prayer", "Fasting"],
+        correct: 1,
+        difficulty: "medium",
+        explanation: "Atonement is the reconciliation between God and humanity through Jesus's sacrifice."
+      },
+      {
+        question: "How many sacraments do most Protestant churches recognize?",
+        answers: ["2", "5", "7", "10"],
+        correct: 0,
+        difficulty: "medium",
+        explanation: "Most Protestant churches recognize two sacraments: Baptism and Communion."
+      },
+      {
+        question: "What does 'omnipotent' mean about God?",
+        answers: ["All-knowing", "All-powerful", "Everywhere", "Eternal"],
+        correct: 1,
+        difficulty: "easy",
+        explanation: "Omnipotent means God is all-powerful and can do anything (Revelation 19:6)."
+      }
+    ];
+
+    // Copy for additional modes
+    quizData['book-specific'] = [...quizData['new-testament']];
+    quizData['verse-completion'] = [...quizData['general'].slice(0, 5), ...quizData['new-testament'].slice(0, 5)];
+
+    // Quiz State
+    let currentCategory = '';
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let skippedAnswers = 0;
+    let selectedAnswer = null;
+    let hasAnswered = false;
+
+    function startQuiz(category) {
+      currentCategory = category;
+      currentQuestions = [...quizData[category]].sort(() => Math.random() - 0.5).slice(0, 10);
+      currentQuestionIndex = 0;
+      score = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      skippedAnswers = 0;
+
+      document.getElementById('categoryScreen').style.display = 'none';
+      document.getElementById('quizScreen').style.display = 'block';
+      document.getElementById('resultsScreen').style.display = 'none';
+
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      hasAnswered = false;
+      selectedAnswer = null;
+      const question = currentQuestions[currentQuestionIndex];
+      
+      document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1} of 10`;
+      document.getElementById('progressBar').style.width = `${((currentQuestionIndex + 1) / 10) * 100}%`;
+      document.getElementById('currentScore').textContent = score;
+      document.getElementById('questionText').textContent = question.question;
+      document.getElementById('difficultyBadge').textContent = question.difficulty.toUpperCase();
+      document.getElementById('difficultyBadge').className = `difficulty-badge difficulty-${question.difficulty}`;
+      
+      let categoryLabel = currentCategory.replace('-', ' ');
+      categoryLabel = categoryLabel.charAt(0).toUpperCase() + categoryLabel.slice(1);
+      document.getElementById('categoryLabel').textContent = categoryLabel;
+      
+      document.getElementById('explanationBox').classList.remove('show');
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('finishBtn').style.display = 'none';
+
+      const answersContainer = document.getElementById('answersContainer');
+      answersContainer.innerHTML = '';
+
+      question.answers.forEach((answer, index) => {
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'answer-option';
+        answerDiv.onclick = () => selectAnswer(index);
+        answerDiv.innerHTML = `
+          <div class="answer-letter">${String.fromCharCode(65 + index)}</div>
+          <div class="flex-1">${answer}</div>
+        `;
+        answersContainer.appendChild(answerDiv);
+      });
+    }
+
+    function selectAnswer(index) {
+      if (hasAnswered) return;
+
+      selectedAnswer = index;
+      hasAnswered = true;
+
+      const question = currentQuestions[currentQuestionIndex];
+      const options = document.querySelectorAll('.answer-option');
+
+      options.forEach((option, i) => {
+        option.classList.add('disabled');
+        if (i === question.correct) {
+          option.classList.add('correct');
+        } else if (i === index && index !== question.correct) {
+          option.classList.add('incorrect');
+        }
+        option.onclick = null;
+      });
+
+      if (index === question.correct) {
+        score++;
+        correctAnswers++;
+      } else {
+        incorrectAnswers++;
+      }
+
+      document.getElementById('currentScore').textContent = score;
+      document.getElementById('explanationText').textContent = question.explanation;
+      document.getElementById('explanationBox').classList.add('show');
+
+      if (currentQuestionIndex === currentQuestions.length - 1) {
+        document.getElementById('finishBtn').style.display = 'flex';
+      } else {
+        document.getElementById('nextBtn').style.display = 'flex';
+      }
+    }
+
+
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < currentQuestions.length) {
+        loadQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      document.getElementById('quizScreen').style.display = 'none';
+      document.getElementById('resultsScreen').style.display = 'block';
+
+      const percentage = Math.round((score / 10) * 100);
+      
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('correctCount').textContent = correctAnswers;
+      document.getElementById('incorrectCount').textContent = incorrectAnswers;
+      document.getElementById('percentageScore').textContent = percentage + '%';
+
+      let message, description;
+      if (score >= 9) {
+        message = "Outstanding! 🌟";
+        description = "You're a true Bible scholar!";
+      } else if (score >= 7) {
+        message = "Great Job! 👏";
+        description = "You have excellent biblical knowledge!";
+      } else if (score >= 5) {
+        message = "Well Done! 📖";
+        description = "Keep studying and you'll improve!";
+      } else {
+        message = "Keep Learning! 💪";
+        description = "There's always more to discover in God's Word!";
+      }
+
+      document.getElementById('resultMessage').textContent = message;
+      document.getElementById('resultDescription').textContent = description;
+    }
+
+    function retakeQuiz() {
+      startQuiz(currentCategory);
+    }
+
+    function resetQuiz() {
+      document.getElementById('resultsScreen').style.display = 'none';
+      document.getElementById('categoryScreen').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
