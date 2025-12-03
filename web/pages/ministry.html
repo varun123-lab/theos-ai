@@ -109,65 +109,63 @@
   <!-- Tech Grid Background -->
   <div class="tech-grid"></div>
 
-  <!-- Floating Navigation -->
-  <div id="floating-nav" 
-    class="fixed top-10 left-5 w-20 bg-black text-white rounded-3xl shadow-2xl retro-border
-           flex flex-col items-center gap-5 py-6 px-4 select-none z-50">
+  <!-- Side Navigation -->
+  <nav id="floating-nav" 
+    class="fixed top-1/2 left-4 transform -translate-y-1/2 bg-black/90 backdrop-blur-md text-white rounded-2xl shadow-lg
+           flex flex-col items-center gap-2 px-2.5 py-4 select-none z-50 border border-white/10">
 
-    <div class="w-12 h-1 bg-gradient-to-r from-white via-gray-400 to-white rounded-full mb-2 opacity-30"></div>
-
-    <a href="../index.html" class="nav-icon" data-tooltip="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+    <a href="../index.html" class="nav-link" data-tooltip="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
       viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z"/>
       </svg>
     </a>
 
-    <a href="study.html" class="nav-icon" data-tooltip="Study">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+    <a href="study.html" class="nav-link" data-tooltip="Study">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
       viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
       </svg>
     </a>
 
-    <a href="atlas.html" class="nav-icon" data-tooltip="Atlas">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+    <a href="atlas.html" class="nav-link" data-tooltip="Atlas">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
       viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
       </svg>
     </a>
 
-    <a href="ministry.html" class="nav-icon" data-tooltip="Ministry">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+    <a href="ministry.html" class="nav-link" data-tooltip="Ministry">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
       viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
       </svg>
     </a>
 
-    <a href="theos.html" class="nav-icon" data-tooltip="Theos Chat">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+    <a href="theos.html" class="nav-link" data-tooltip="Theos">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
       viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
       </svg>
     </a>
 
-    <a href="quiz.html" class="nav-icon" data-tooltip="Bible Quiz">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+    <a href="quiz.html" class="nav-link" data-tooltip="Quiz">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
       viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
     </a>
 
-  </div>
+  </nav>
 
   <!-- Main Content -->
-  <div class="ml-32 mr-10 p-10 max-w-[1800px] mx-auto relative z-10">
+  <div class="ml-20 px-10 py-10 max-w-[1800px] mx-auto relative z-10">
 
     <!-- Header -->
     <div class="mb-12" data-aos="fade-down">

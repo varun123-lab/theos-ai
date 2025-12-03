@@ -61,54 +61,56 @@ body {
    ======================================== */
 
 #floating-nav {
-  transition: left 0.05s linear, top 0.05s linear;
-  box-shadow: 0 8px 32px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease-out;
 }
 
-.nav-icon {
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-20px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+.nav-link {
   position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.nav-icon:hover {
-  transform: scale(1.15) rotate(5deg);
+.nav-link:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  color: white;
+  transform: translateX(2px);
 }
 
-.nav-icon::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.nav-icon:hover::before {
-  opacity: 1;
-}
-
-.nav-icon:hover::after {
+.nav-link:hover::after {
   content: attr(data-tooltip);
   position: absolute;
-  left: 70px;
+  left: calc(100% + 12px);
   top: 50%;
   transform: translateY(-50%);
   background: #1a1a1a;
   color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 0.75rem;
   font-weight: 500;
   z-index: 100;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   border: 1px solid rgba(255,255,255,0.1);
+  font-family: 'Inter', sans-serif;
+  pointer-events: none;
 }
 
 /* ========================================
