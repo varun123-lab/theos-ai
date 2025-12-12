@@ -33,74 +33,83 @@
   <!-- Tech Grid Background -->
   <div class="tech-grid"></div>
 
-  <!-- Floating Pill Navigation -->
-  <nav class="floating-pill-nav">
-    <div class="nav-container">
+  <!-- Vertical Sidebar Navigation -->
+  <nav class="sidebar-nav">
+    <div class="sidebar-container">
       
-      <!-- Left: Logo -->
-      <a href="index.html" class="nav-logo-section">
-        <div class="nav-logo-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-          </svg>
-        </div>
-        <span class="nav-logo-text">THEOS</span>
-      </a>
-
-      <!-- Center: Navigation Links -->
-      <div class="nav-links-wrapper">
-        <a href="index.html" class="pill-nav-link active" data-page="home">
-          <div class="pill-nav-icon">
-            <i class="fas fa-home"></i>
+      <!-- Top: Logo -->
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
           </div>
-          <span class="pill-nav-label">Home</span>
-        </a>
-        
-        <a href="pages/study.html" class="pill-nav-link" data-page="study">
-          <div class="pill-nav-icon">
-            <i class="fas fa-book-open"></i>
-          </div>
-          <span class="pill-nav-label">Study</span>
-        </a>
-        
-        <a href="pages/atlas.html" class="pill-nav-link" data-page="atlas">
-          <div class="pill-nav-icon">
-            <i class="fas fa-map-marked-alt"></i>
-          </div>
-          <span class="pill-nav-label">Atlas</span>
-        </a>
-        
-        <a href="pages/ministry.html" class="pill-nav-link" data-page="ministry">
-          <div class="pill-nav-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <span class="pill-nav-label">Ministry</span>
-        </a>
-        
-        <a href="pages/theos.html" class="pill-nav-link" data-page="chat">
-          <div class="pill-nav-icon">
-            <i class="fas fa-brain"></i>
-          </div>
-          <span class="pill-nav-label">AI Chat</span>
-        </a>
-        
-        <a href="pages/quiz.html" class="pill-nav-link" data-page="quiz">
-          <div class="pill-nav-icon">
-            <i class="fas fa-gamepad"></i>
-          </div>
-          <span class="pill-nav-label">Quiz</span>
+          <span class="sidebar-logo-text">THEOS</span>
         </a>
       </div>
 
-      <!-- Right: Action Buttons -->
-      <div class="nav-actions">
-        <button class="nav-action-btn" id="searchBtn" title="Search">
+      <!-- Middle: Navigation Links -->
+      <div class="sidebar-links">
+        <a href="index.html" class="sidebar-link active" data-page="home">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <span class="sidebar-link-label">Home</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="pages/study.html" class="sidebar-link" data-page="study">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <span class="sidebar-link-label">Study</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="pages/atlas.html" class="sidebar-link" data-page="atlas">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <span class="sidebar-link-label">Atlas</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="pages/ministry.html" class="sidebar-link" data-page="ministry">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <span class="sidebar-link-label">Ministry</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="pages/theos.html" class="sidebar-link" data-page="chat">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <span class="sidebar-link-label">AI Chat</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="pages/quiz.html" class="sidebar-link" data-page="quiz">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <span class="sidebar-link-label">Quiz</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+      </div>
+
+      <!-- Bottom: Action Buttons -->
+      <div class="sidebar-footer">
+        <button class="sidebar-action-btn" id="searchBtn" title="Search">
           <i class="fas fa-search"></i>
         </button>
-        <button class="nav-action-btn" id="focusModeBtn" title="Focus Mode">
+        <button class="sidebar-action-btn" id="focusModeBtn" title="Focus Mode">
           <i class="fas fa-eye"></i>
         </button>
-        <button class="nav-action-btn nav-profile-btn" title="Profile">
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-action-btn sidebar-profile-btn" title="Profile">
           <i class="fas fa-user-circle"></i>
         </button>
       </div>
@@ -109,7 +118,7 @@
   </nav>
 
   <!-- Main Content -->
-  <div class="pt-28 px-6 max-w-7xl mx-auto relative z-10">
+  <div class="pl-28 pr-6 py-8 max-w-7xl mx-auto relative z-10">
 
     <!-- Welcome Banner -->
     <div class="welcome-banner mb-8" data-aos="fade-down">
