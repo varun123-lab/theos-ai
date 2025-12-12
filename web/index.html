@@ -33,64 +33,83 @@
   <!-- Tech Grid Background -->
   <div class="tech-grid"></div>
 
-  <!-- Top Navigation Bar -->
-  <nav class="top-nav fixed top-0 left-0 right-0 z-50">
-    <div class="max-w-full px-6 py-3 flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="logo-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+  <!-- Floating Pill Navigation -->
+  <nav class="floating-pill-nav">
+    <div class="nav-container">
+      
+      <!-- Left: Logo -->
+      <a href="index.html" class="nav-logo-section">
+        <div class="nav-logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
           </svg>
         </div>
-        <span class="logo-text">THEOS <span class="text-gradient">AI</span></span>
+        <span class="nav-logo-text">THEOS</span>
+      </a>
+
+      <!-- Center: Navigation Links -->
+      <div class="nav-links-wrapper">
+        <a href="index.html" class="pill-nav-link active" data-page="home">
+          <div class="pill-nav-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <span class="pill-nav-label">Home</span>
+        </a>
+        
+        <a href="pages/study.html" class="pill-nav-link" data-page="study">
+          <div class="pill-nav-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <span class="pill-nav-label">Study</span>
+        </a>
+        
+        <a href="pages/atlas.html" class="pill-nav-link" data-page="atlas">
+          <div class="pill-nav-icon">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <span class="pill-nav-label">Atlas</span>
+        </a>
+        
+        <a href="pages/ministry.html" class="pill-nav-link" data-page="ministry">
+          <div class="pill-nav-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <span class="pill-nav-label">Ministry</span>
+        </a>
+        
+        <a href="pages/theos.html" class="pill-nav-link" data-page="chat">
+          <div class="pill-nav-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <span class="pill-nav-label">AI Chat</span>
+        </a>
+        
+        <a href="pages/quiz.html" class="pill-nav-link" data-page="quiz">
+          <div class="pill-nav-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <span class="pill-nav-label">Quiz</span>
+        </a>
       </div>
 
-      <!-- Navigation Links -->
-      <div class="flex items-center gap-1">
-        <a href="index.html" class="top-nav-link active">
-          <i class="fas fa-home"></i>
-          <span>Home</span>
-        </a>
-        <a href="pages/study.html" class="top-nav-link">
-          <i class="fas fa-book-open"></i>
-          <span>Study</span>
-        </a>
-        <a href="pages/atlas.html" class="top-nav-link">
-          <i class="fas fa-map"></i>
-          <span>Atlas</span>
-        </a>
-        <a href="pages/ministry.html" class="top-nav-link">
-          <i class="fas fa-users"></i>
-          <span>Ministry</span>
-        </a>
-        <a href="pages/theos.html" class="top-nav-link">
-          <i class="fas fa-comment-dots"></i>
-          <span>Chat</span>
-        </a>
-        <a href="pages/quiz.html" class="top-nav-link">
-          <i class="fas fa-question-circle"></i>
-          <span>Quiz</span>
-        </a>
-      </div>
-
-      <!-- Right Side Actions -->
-      <div class="flex items-center gap-3">
-        <button class="icon-btn" id="searchBtn">
+      <!-- Right: Action Buttons -->
+      <div class="nav-actions">
+        <button class="nav-action-btn" id="searchBtn" title="Search">
           <i class="fas fa-search"></i>
         </button>
-        <button class="icon-btn" id="bookmarkBtn">
-          <i class="fas fa-bookmark"></i>
+        <button class="nav-action-btn" id="focusModeBtn" title="Focus Mode">
+          <i class="fas fa-eye"></i>
         </button>
-        <button class="icon-btn" id="focusModeBtn">
-          <i class="fas fa-expand"></i>
+        <button class="nav-action-btn nav-profile-btn" title="Profile">
+          <i class="fas fa-user-circle"></i>
         </button>
       </div>
+      
     </div>
   </nav>
 
   <!-- Main Content -->
-  <div class="pt-20 px-6 max-w-7xl mx-auto relative z-10">
+  <div class="pt-28 px-6 max-w-7xl mx-auto relative z-10">
 
     <!-- Welcome Banner -->
     <div class="welcome-banner mb-8" data-aos="fade-down">
