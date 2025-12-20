@@ -449,71 +449,99 @@
   <!-- Tech Grid Background -->
   <div class="tech-grid"></div>
 
-  <!-- Side Navigation -->
-  <nav id="floating-nav" 
-    class="fixed top-1/2 left-4 transform -translate-y-1/2 backdrop-blur-md rounded-2xl shadow-lg
-           flex flex-col items-center gap-2 px-2.5 py-4 select-none z-50 border"
-    style="background: rgba(255, 255, 255, 0.85); border-color: rgba(139, 117, 95, 0.3);">
+  <!-- Vertical Sidebar Navigation -->
+  <nav class="sidebar-nav">
+    <div class="sidebar-container">
+      
+      <!-- Top: Logo -->
+      <div class="sidebar-header">
+        <a href="../index.html" class="sidebar-logo">
+          <div class="sidebar-logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          <span class="sidebar-logo-text">THEOS</span>
+        </a>
+      </div>
 
-    <a href="../index.html" class="nav-link" data-tooltip="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
-      viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z"/>
-      </svg>
-    </a>
+      <!-- Middle: Navigation Links -->
+      <div class="sidebar-links">
+        <a href="../index.html" class="sidebar-link" data-page="home">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <span class="sidebar-link-label">Home</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="study.html" class="sidebar-link" data-page="study">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <span class="sidebar-link-label">Study</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="atlas.html" class="sidebar-link" data-page="atlas">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <span class="sidebar-link-label">Atlas</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="ministry.html" class="sidebar-link" data-page="ministry">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <span class="sidebar-link-label">Ministry</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="theos.html" class="sidebar-link" data-page="chat">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <span class="sidebar-link-label">AI Chat</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+        
+        <a href="quiz.html" class="sidebar-link active" data-page="quiz">
+          <div class="sidebar-link-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <span class="sidebar-link-label">Quiz</span>
+          <div class="sidebar-link-indicator"></div>
+        </a>
+      </div>
 
-    <a href="study.html" class="nav-link" data-tooltip="Study">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
-      viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-      </svg>
-    </a>
-
-    <a href="atlas.html" class="nav-link" data-tooltip="Atlas">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
-      viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-      </svg>
-    </a>
-
-    <a href="ministry.html" class="nav-link" data-tooltip="Ministry">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
-      viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-      </svg>
-    </a>
-
-    <a href="theos.html" class="nav-link" data-tooltip="Theos">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
-      viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-      </svg>
-    </a>
-
-    <a href="quiz.html" class="nav-link" data-tooltip="Quiz">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
-      viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-    </a>
-
+      <!-- Bottom: Action Buttons -->
+      <div class="sidebar-footer">
+        <button class="sidebar-action-btn" id="searchBtn" title="Search">
+          <i class="fas fa-search"></i>
+        </button>
+        <button class="sidebar-action-btn" id="focusModeBtn" title="Focus Mode">
+          <i class="fas fa-eye"></i>
+        </button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-action-btn sidebar-profile-btn" title="Profile">
+          <i class="fas fa-user-circle"></i>
+        </button>
+      </div>
+      
+    </div>
   </nav>
 
   <!-- Main Content -->
-  <div class="ml-20 px-10 pt-10 pb-10 relative z-10">
+  <div class="pl-28 pr-6 py-8 max-w-6xl mx-auto relative z-10">
 
     <!-- Header -->
     <div class="page-header" data-aos="fade-down">
-      <h1 class="page-title text-white">
-        Bible Quiz
+      <h1 class="page-title" style="font-family: 'Lora', serif; color: #3d3328;">
+        <i class="fas fa-gamepad me-3" style="color: #8b755f;"></i>Bible Quiz
       </h1>
-      <p class="page-subtitle text-gray-300" data-aos="fade-up" data-aos-delay="200">
+      <p class="page-subtitle" data-aos="fade-up" data-aos-delay="200" style="color: #6d5e4a;">
         Test your knowledge and grow deeper in the Word through interactive quizzes
       </p>
     </div>
